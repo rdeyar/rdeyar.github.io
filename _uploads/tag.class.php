@@ -1,21 +1,19 @@
 <?php defined('BLUDIT') or die('Bludit CMS.');
 
-class Category {
+class Tag {
 
 	protected $vars;
 
 	function __construct($key)
 	{
-		global $categories;
-		if (isset($categories->db[$key])) {
-			$this->vars['name'] 		= $categories->db[$key]['name'];
-			$this->vars['template'] 	= $categories->db[$key]['template'];
-			$this->vars['description'] 	= $categories->db[$key]['description'];
+		global $tags;
+		if (isset($tags->db[$key])) {
+			$this->vars['name'] 		= $tags->db[$key]['name'];
 			$this->vars['key'] 		= $key;
-			$this->vars['permalink'] 	= DOMAIN_CATEGORIES . $key;
-			$this->vars['list'] 		= $categories->db[$key]['list'];
+			$this->vars['permalink'] 	= DOMAIN_TAGS . $key;
+			$this->vars['list'] 		= $tags->db[$key]['list'];
 		} else {
-			$errorMessage = 'Category not found in database by key ['.$key.']';
+			$errorMessage = 'Tag not found in database by key ['.$key.']';
 			Log::set(__METHOD__.LOG_SEP.$errorMessage);
 			throw new Exception($errorMessage);
 		}
@@ -44,17 +42,7 @@ class Category {
 		return $this->getValue('permalink');
 	}
 
-	public function template()
-	{
-		return $this->getValue('template');
-	}
-
-	public function description()
-	{
-		return $this->getValue('description');
-	}
-
-	// Returns an array with the keys of pages linked to the category
+	// Returns an array with the pages keys linked to the tag
 	public function pages()
 	{
 		return $this->getValue('list');
@@ -65,7 +53,6 @@ class Category {
 	{
 		$tmp['key'] 		= $this->key();
 		$tmp['name'] 		= $this->name();
-		$tmp['description'] 	= $this->description();
 		$tmp['permalink'] 	= $this->permalink();
 		$tmp['pages'] 		= $this->pages();
 
